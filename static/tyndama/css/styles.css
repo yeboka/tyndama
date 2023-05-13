@@ -1,0 +1,403 @@
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    background-color: #0E0E0E;
+    font-family: 'Chivo';
+    color: #FFFFFF;
+    display: flex;
+}
+
+a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+p,a:hover {
+    cursor: pointer;
+}
+
+.nav {
+    z-index: 100;
+    width: 22.6%;
+    border-right: 1px #6F6F6F solid;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0 30px 41px;
+    border-bottom: 1px #6F6F6F solid;
+}
+
+.name {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    /* identical to box height */
+
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.avatar {
+    width: 78px;
+    height: 78px;
+    box-shadow: 10px 10px 250px 100px rgba(33, 239, 0, 0.25);
+
+    background-position: center;
+    background-size: contain;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons a {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.buttons span {
+    margin-left: 10px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    /* identical to box height */
+}
+
+.playlists {
+    padding: 20px 0 30px 41px;
+}
+
+.playlists h4 {
+    margin: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+}
+
+.playlist {
+    display: flex;
+    align-items: center;
+    margin-top: 13px;
+}
+
+.playlist-info > p {
+    margin: 0;
+    padding: 0;
+}
+
+.img-wrapper {
+    width: 55px;
+    height: 55px;
+    background-position: center;
+    background-size: cover;
+    margin-right: 10px;
+}
+
+.playlist .title {
+    padding-top: 10px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.playlist .num-of-tracks {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #949494;
+    padding-bottom: 10px;
+}
+
+.content {
+    width: 77.4%;
+    height: 100vh;
+    position: relative;
+}
+
+.top-block {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search{
+    display: flex;
+    justify-content: center;
+    width: 90%;
+}
+
+.search form {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search > form > i {
+    position: absolute;
+    left: 1%;
+    color: #A8A8A8;
+}
+
+.search-input {
+    width: 712px;
+    height: 40px;
+    background: #4D4D4D;
+    border: 1px solid #F8F8F8;
+    border-radius: 20px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #A8A8A8;
+    padding-left: 30px;
+}
+
+
+.search-button {
+    width: 108px;
+    height: 43px;
+
+    background: #36BA33;
+    border-radius: 20px;
+    border: none;
+    margin-left: 16px;
+}
+
+.curr-playlist {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin-top: 50px;
+}
+
+.big {
+    width: 78px;
+    height: 78px;
+}
+
+.mr {
+    margin-right: 11px;
+}
+
+.big-title {
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 36px;
+}
+
+.big-num-of-tracks {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    margin-top: 5px;
+    color: #949494;
+}
+
+.mid-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table {
+    width: 90%;
+    margin-top: 10px;
+    /*border-collapse: collapse;*/
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+/*table, tr, td, th{*/
+/*    border: none;*/
+/*}*/
+
+tr > td:last-child, th:last-child {
+    padding-right: 5px;
+}
+
+table th {
+    font-size: 15px;
+    line-height: 24px;
+}
+
+table td {
+    font-size: 20px;
+    line-height: 30px;
+
+}
+
+
+
+tbody {
+    margin-top: 15px;
+}
+
+tbody > tr {
+    margin: auto;
+    height: 47px;
+}
+
+tbody > tr> td:nth-child(1) {
+    border-radius: 5px 0 0 5px;
+}
+
+tbody > tr> td:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+tbody > tr:nth-child(odd) {
+    background: #222222;
+}
+
+tbody > tr:nth-child(even) {
+    background: #2A312A;
+}
+
+table th, td {
+    color: #9F9F9F;
+    font-weight: 400;
+    text-align: left;
+    padding-left: 10px;
+    border: none;
+}
+
+table td:last-child,th:last-child{
+    text-align: right;
+}
+
+.bottom-block {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 166px;
+    background: rgba(33, 47, 32, 0.16);
+    position: absolute;
+    bottom: 0;
+}
+
+.light{
+    z-index: -100;
+    position: absolute;
+    width: 1px;
+    bottom: 5px;
+    left: 1%;
+    height: 1px;
+    box-shadow: 0px 0px 200px 100px rgba(17, 241, 39, 0.25);
+}
+
+.player {
+    display: flex;
+    width: 50%;
+    align-items: center;
+    /*justify-content: center;*/
+
+}
+
+.album-image {
+    width: 128px;
+    height: 128px;
+    background-position: center;
+    background-size: cover;
+}
+
+.control-panel {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 70%;
+}
+
+.player-title {
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.artist {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #adadad;
+}
+
+.control {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0 8px 0;
+}
+
+.control .btn {
+    color: #fff;
+    padding: 18px;
+    font-size: 18px;
+}
+
+.control .btn.active {
+    color: #0E0E0E;
+}
+
+
+.control .btn-toggle-play {
+    border-radius: 50%;
+    font-size: 24px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control .btn-toggle-play:first-child {
+
+}
+
+.progress {
+    width: 80%;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #1f1d1d;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+}
+
+.progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 6px;
+    background-color: #36BA33;
+    cursor: pointer;
+}
+
+
+
+
+
