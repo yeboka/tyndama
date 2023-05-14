@@ -221,6 +221,9 @@ p,a:hover {
 
 table {
     width: 90%;
+    border: 1px white solid;
+    max-height: 100%;
+    scroll-behavior: auto;
     margin-top: 10px;
     /*border-collapse: collapse;*/
     border-collapse: separate;
