@@ -26,7 +26,7 @@ class CreateUserForm(UserCreationForm):
 class AddMusicForm(ModelForm):
 	class Meta:
 		model = Music
-		fields = ('name', 'singer', 'tags', 'image', 'song', 'album', 'time')
+		fields = ('name', 'singer', 'tags', 'image', 'song', 'album')
 		labels = {
 			'name': '',
 			'singer': '',
@@ -34,7 +34,7 @@ class AddMusicForm(ModelForm):
 			'image': '',
 			'song': '',
 			'album': '',
-			'time': '',
+
 
 		}
 		widgets = {
@@ -44,5 +44,5 @@ class AddMusicForm(ModelForm):
 			'image': forms.FileInput(attrs={'class': 'form-control', 'placeholder': ''}),
 			'song': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Song'}),
 			'album': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Album'}),
-			'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Time'}),
+
 		}
