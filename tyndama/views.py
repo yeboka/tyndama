@@ -20,3 +20,12 @@ def get_music(request):
         print(length)
 
     return render(request, 'tyndama/get_music.html', {'music': music})
+#
+#
+# def get_time(name, url):
+#     # audio_path = './media/' + name
+#     print('this is url:: ' + url)
+#     audio = MP3(url)
+#     length = int(audio.info.length)
+#     print(length)
+# g
