@@ -6,30 +6,23 @@ from .models import Music
 
 
 class CreateUserForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+	username = forms.CharField(label='Log_in', widget=forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Username'}))
+	email = forms.CharField(label='Email', widget=forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Email address'}))
+	password1 = forms.CharField(label='Password', widget=forms.PasswordInput(
+		attrs={'class': 'form-input', 'placeholder': 'password first'}))
+	password2 = forms.CharField(label='Password', widget=forms.PasswordInput(
+		attrs={'class': 'form-input', 'placeholder': 'password second'}))
 
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
+	class Meta:
+		model = User
+		fields = ['username', 'email', 'password1', 'password2']
 
-    def save(self, commit=True):
-        user = super(CreateUserForm, self).save(commit=False)
-
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-        return user
-
-        user.email = self.cleaned_data[email]
-        if commit:
-            user.save()
-        return user
 
 
 
 
 # create music form
-# create a Train form
+
 class AddMusicForm(ModelForm):
 	class Meta:
 		model = Music
@@ -42,13 +35,14 @@ class AddMusicForm(ModelForm):
 			'song': '',
 			'album': '',
 
+
 		}
 		widgets = {
 			'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
 			'singer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Singer'}),
 			'tags': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tag'}),
-			'image': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
-			'song': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Song'}),
+			'image': forms.FileInput(attrs={'class': 'form-control', 'placeholder': ''}),
+			'song': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Song'}),
 			'album': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Album'}),
 
 		}
