@@ -6,5 +6,10 @@
 </head>
 <body>
 <h2>User profile</h2>
+<h3>Hello {{ request.user }}</h3>
+<hr/>
+<a href="{% url 'add_music' %}">Add Music</a>
+
+<a href="{% url 'logout' %}">Log out</a>
 </body>
 </html>
