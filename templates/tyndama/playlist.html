@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PlayList</title>
+</head>
+<body>
+<div class="playlist">
+    {% for music in music_list %}
+        <h3>{{ music.name }}</h3>
+        <p>{{ music.singer }}</p>
+        <p>{{ music.album }}</p>
+        <br>
+        <h1>next music</h1>
+
+    {% endfor %}
+
+</div>
+</body>
+</html>
