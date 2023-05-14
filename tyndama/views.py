@@ -50,14 +50,18 @@ def loginPage(request):
     context = {}
     return render(request, "tyndama/loginPage.html", context)
 
+
 def logoutPage(request):
     logout(request)
     return redirect('login')
+
+
 @login_required(login_url=login)
 def user_profile(request):
 
     context = {}
     return render(request, 'tyndama/user_profile.html', context)
+
 
 def get_music(request):
     music = Music.objects.all()
@@ -68,7 +72,6 @@ def get_music(request):
         audio = MP3(audio_path)
         length = int(audio.info.length)
         print(length)
-
 
     return render(request, 'tyndama/get_music.html', {'music': music})
 
