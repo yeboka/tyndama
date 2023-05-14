@@ -22,7 +22,6 @@ class CreateUserForm(UserCreationForm):
 
 
 # create music form
-
 class AddMusicForm(ModelForm):
 	class Meta:
 		model = Music
