@@ -7,22 +7,25 @@ from tyndama.forms import CreateUserForm, AddMusicForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
+from django.contrib.auth.models import User
+
+
+
 
 def home(request):
     music = Music.objects.all()
 
-    return render(request, 'tyndama/home.html', {'music' : music})
+    return render(request, 'tyndama/home.html', {'music': music})
+
 
 def registerPage(request):
-    form = CreateUserForm
+    form = CreateUserForm()
 
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')
-        else:
-            form = CreateUserForm()
     context = {'form': form}
     return render(request, 'tyndama/registerPage.html', context)
 
@@ -65,21 +68,16 @@ def get_time(name, url):
     length = int(audio.info.length)
     print(length)
 
+
 def add_music(request):
-    submitted = False
     form = AddMusicForm()
-
-    if 'submitted' in request.GET:
-        submitted = True
-
     if request.method == 'POST':
-        form = AddMusicForm(request.POST)
-
+        form = AddMusicForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/add_music?submitted=True')
+            messages.success(request, 'Form is valid!')
+            return HttpResponseRedirect('/')
         else:
-            submitted = True
-    context = {'form': form, 'submitted': submitted}
-    return render(request, 'tyndama/add_music.html', context)
-
+            print('error')
+    context = {'form': form}
+    return render(request, 'tyndama/add_music.html', context=context)

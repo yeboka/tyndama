@@ -6,15 +6,20 @@
 </head>
 <body>
 <center>
-{% if submitted %}
-    Wait for the permission from admin!
-{% else %}
-        <form action="" method="POST">
+
+        <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.name}}
+            {{ form.singer}}
+            {{ form.tags}}
+            {{ form.image}}
+            {{ form.song}}
+            {{ form.album}}
+            {{ form.time }}
+
             <button type="submit" class="btn btn-success">Upload</button>
         </form>
-{% endif %}
+
 </center>
 </body>
 </html>
