@@ -49,8 +49,8 @@ class AddMusicForm(ModelForm):
 			'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
 			'singer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Singer'}),
 			'tags': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tag'}),
-			'image': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
-			'song': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Song'}),
+			'image': forms.FileInput(attrs={'class': 'form-control', 'placeholder': ''}),
+			'song': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Song'}),
 			'album': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Album'}),
 
 		}

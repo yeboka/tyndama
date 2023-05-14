@@ -22,7 +22,7 @@ def registerPage(request):
             form.save()
             return redirect('login')
         else:
-            form = CreateUserForm
+            form = CreateUserForm()
     context = {'form': form}
     return render(request, 'tyndama/registerPage.html', context)
 
