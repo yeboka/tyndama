@@ -12,4 +12,5 @@ urlpatterns = [
     path('user_profile/', views.user_profile, name='user_profile'),
     path('admin_panel/', views.admin_panel, name='admin_panel'),
 
+
 ]

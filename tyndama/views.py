@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate, login, logout
 from tyndama.forms import CreateUserForm, AddMusicForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from .decorators import is_admin
 
 from django.contrib.auth.models import User
 
@@ -60,7 +59,7 @@ def loginPage(request):
 
 def logoutPage(request):
     logout(request)
-    return redirect('login')
+    return redirect('home')
 
 
 
@@ -69,11 +68,15 @@ def user_profile(request):
     return render(request, 'tyndama/user_profile.html', context)
 
 
-@user_passes_test(is_admin)
+
 def admin_panel(request):
     music = Music.objects.all()
-    context = {'music': music}
-    return render(request, 'tyndama/admin_panel.html', context)
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            context = {'music': music}
+            return render(request, 'tyndama/admin_panel.html', context)
+    else:
+        return redirect('home')
 
 
 
@@ -111,13 +114,14 @@ def add_music(request):
     return render(request, 'tyndama/add_music.html', context=context)
 
 
-@user_passes_test(is_admin)
+
 def delete_music(request, pk):
     music = Music.objects.get(song_id=pk)
-
-    if request.method == 'POST':
-        music.delete()
-        return redirect('home')
-
-    context = {'music': music}
-    return render(request, 'tyndama/delete_music.html', context)
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            if request.method == 'POST':
+                music.delete()
+                return redirect('home')
+    else:
+       context = {'music': music}
+       return render(request, 'tyndama/delete_music.html', context)
