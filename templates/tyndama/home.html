@@ -90,38 +90,14 @@
             <tbody>
             {% for i in music %}
                 <tr>
-                    <td>1</td>
+                    <td>{{ i.song_id }}</td>
                     <td><img src="{% static 'tyndama/img/play.svg' %}" alt=""></td>
                     <td>{{ i.name }}</td>
                     <td>{{ i.singer }}</td>
-                    <td></td>
-                    <td>3:00</td>
+                    <td>{{ i.album }}</td>
+                    <td>{{ i.time }}</td>
                 </tr>
             {% endfor %}
-            <tr>
-                <td>1</td>
-                <td><img src="{% static 'tyndama/img/play.svg' %}" alt=""></td>
-                <td>See You Again (Clean)</td>
-                <td>Tyler, The Creator/Kali Uchis</td>
-                <td>Flower Boy</td>
-                <td>3:00</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td><img src="{% static 'tyndama/img/play.svg' %}" alt=""></td>
-                <td>See You Again (Clean)</td>
-                <td>Tyler, The Creator/Kali Uchis</td>
-                <td>Flower Boy</td>
-                <td>3:00</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td><img src="{% static 'tyndama/img/pause.svg' %}" alt=""></td>
-                <td>See You Again (Clean)</td>
-                <td>Tyler, The Creator/Kali Uchis</td>
-                <td>Flower Boy</td>
-                <td>3:00</td>
-            </tr>
             </tbody>
         </table>
     </div>
