@@ -1,5 +1,9 @@
 from django.db import models
 
+from .helper import  get_time
+
+
+
 
 class Music(models.Model):
     song_id = models.AutoField(primary_key=True)
@@ -13,5 +17,19 @@ class Music(models.Model):
 
     def _str_(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.time:
+            sec = get_time(self.song)
+            audio_length = int(sec / 60)
+            mode = int(sec - (audio_length * 60))
+            print(mode)
+            time = f"{audio_length}:{mode}"
+
+
+            self.time = time
+
+        return super().save(*args, **kwargs)
+
 
 

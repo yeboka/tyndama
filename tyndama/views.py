@@ -55,26 +55,28 @@ def get_music(request):
     for i in music:
         name = str(i.song)
         audio_path = './media/' + name
-        # print('this is url:: '+audio_path)
-        get_time(name, audio_path)
+        print('this is url:: ' + audio_path)
+        audio = MP3(audio_path)
+        length = int(audio.info.length)
+        print(length)
+
 
     return render(request, 'tyndama/get_music.html', {'music': music})
 
 
-def get_time(name, url):
-    # audio_path = './media/' + name
-    print('this is url:: ' + url)
-    audio = MP3(url)
-    length = int(audio.info.length)
-    print(length)
+
+
 
 
 def add_music(request):
     form = AddMusicForm()
     if request.method == 'POST':
         form = AddMusicForm(request.POST, request.FILES)
+
         if form.is_valid():
-            form.save()
+            print("Hi")
+            instance = form.save(commit=False)
+            instance.save()
             messages.success(request, 'Form is valid!')
             return HttpResponseRedirect('/')
         else:
