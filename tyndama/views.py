@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from tyndama.forms import CreateUserForm, AddMusicForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.contrib.auth.models import User
 
 def home(request):
     music = Music.objects.all()
@@ -21,8 +21,6 @@ def registerPage(request):
         if form.is_valid():
             form.save()
             return redirect('login')
-        else:
-            form = CreateUserForm()
     context = {'form': form}
     return render(request, 'tyndama/registerPage.html', context)
 
