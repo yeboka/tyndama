@@ -31,6 +31,8 @@ class CreateUserForm(UserCreationForm):
 # create music form
 # create a Train form
 class AddMusicForm(ModelForm):
+
+
 	class Meta:
 		model = Music
 		fields = ('name', 'singer', 'tags', 'image', 'song', 'album')
