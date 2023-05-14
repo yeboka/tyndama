@@ -14,6 +14,7 @@
           rel="stylesheet">
 </head>
 <body>
+<audio src="" id="audio"></audio>
 <div class="nav">
     <div class="info">
         <div class="profile-info">
@@ -92,7 +93,7 @@
                 {% for i in music %}
                     <tr>
                         <td>{{ i.song_id }}</td>
-                        <td><img src="{% static 'tyndama/img/play.svg' %}" alt=""></td>
+                        <td><img src="{% static 'tyndama/img/play.svg' %}" onclick="startPlay('{{ i.song }}')" alt=""></td>
                         <td>{{ i.name }}</td>
                         <td>{{ i.singer }}</td>
                         <td>{{ i.album }}</td>
@@ -106,13 +107,14 @@
     <div class="bottom-block">
         <div class="light"></div>
         <div class="player">
-            <div class="album-image" style="background-image: url('{% static 'tyndama/img/img_1.png' %}')"></div>
+{#            style="background-image: url('{% static 'tyndama/img/img_1.png' %}')"#}
+            <div class="album-image" ></div>
             <div class="control-panel">
-                <p class="player-title">
-                    See You Again (Clean)
+                <p class="player-title" id="player-title">
+
                 </p>
                 <p class="artist">
-                    Tyler, The Creator/Kali Uchis
+
                 </p>
                 <div class="control">
                     <div class="btn btn-repeat">
@@ -122,8 +124,8 @@
                         <i class="fas fa-step-backward"></i>
                     </div>
                     <div class="btn btn-toggle-play">
-                        <i class="fas fa-pause icon-pause"></i>
-                        <i class="fas fa-play icon-play"></i>
+                        <span></span>
+                        <span></span>
                     </div>
                     <div class="btn btn-next">
                         <i class="fas fa-step-forward"></i>
@@ -132,11 +134,82 @@
                         <i class="fas fa-random"></i>
                     </div>
                 </div>
-                <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+                <div class="seek-bar">
+                    <div class="times">
+                        <div class="curr-time"></div>
+                        <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+                        <div class="duration"></div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
     </div>
 </div>
+<script>
+
+    const data = [
+        {
+            name: 'Feel Good Inc',
+            path: '/media/{{ music }}',
+            artist: 'Gorillaz',
+            img: 'https://github.com/yeboka/tyndama/blob/aa7a34a46932070b7264e43f1514c327501be968/media/images_1/beck.jpg'
+        }
+    ]
+
+    let currentMusic = 0;
+
+    const music = document.getElementById("audio");
+
+    const seek_bar = document.querySelector('.progress');
+    const album_img = document.querySelector('.album-image');
+    const song_title = document.querySelector('.player-title');
+    const artist = document.querySelector('.artist');
+    const curr_time = document.querySelector('.curr-time');
+    const duration = document.querySelector('.duration');
+    const  play_btn = document.querySelector('.btn-toggle-play');
+    const forward_btn = document.querySelector('.btn-next');
+    const previus_btn = document.querySelector('.btn-prev');
+
+    play_btn.addEventListener('click', () =>{
+        play_btn.classList.toggle('pause')
+    })
+
+    const setMusic = (i) => {
+        seek_bar.value = 0;
+        let song = data[i];
+        currentMusic = i;
+
+        console.log(song)
+        console.log(artist)
+        music.src = song.path;
+        music.play()
+        song_title.innerHTML = song.name;
+        artist.innerHTML = song.artist;
+        album_img.style.backgroundImage = `url('${song.img}')`;
+
+        curr_time.innerHTML = '00:00'
+        setTimeout(()=>{
+            seek_bar.max = music.duration;
+            duration.innerHTML = formatTime(music.duration);
+        }, 500);
+    }
+
+    setMusic(0);
+
+    formatTime = (duration) => {
+        let min = Math.floor(duration / 60);
+        let sec = Math.floor(duration % 60);
+        return `${min}:${sec}`;
+
+    }
+
+    function startPlay(song) {
+        music.src = `/media/${song}`
+        music.play()
+        console.log(song)
+    }
+</script>
 </body>
 </html>

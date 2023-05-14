@@ -11,7 +11,7 @@ from django.contrib.auth.forms import AuthenticationForm
 def home(request):
     music = Music.objects.all()
 
-    return render(request, 'tyndama/home.html', {'music' : music})
+    return render(request, 'tyndama/home.html', {'music': music})
 
 def registerPage(request):
     form = CreateUserForm
