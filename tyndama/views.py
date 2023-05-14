@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Music
@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from tyndama.forms import CreateUserForm, AddMusicForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from .decorators import is_admin
 
 from django.contrib.auth.models import User
 
@@ -42,8 +43,14 @@ def loginPage(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            return redirect('user_profile')
+            if user.is_superuser:
+                # User is a superuser
+                login(request, user)
+                return redirect('admin_panel')
+            else:
+                # User is a regular user
+                login(request, user)
+                return redirect('user_profile')
         else:
             messages.info(request, 'Username or password is incorrect')
 
@@ -56,11 +63,18 @@ def logoutPage(request):
     return redirect('login')
 
 
-@login_required(login_url=login)
-def user_profile(request):
 
+def user_profile(request):
     context = {}
     return render(request, 'tyndama/user_profile.html', context)
+
+
+@user_passes_test(is_admin)
+def admin_panel(request):
+    music = Music.objects.all()
+    context = {'music': music}
+    return render(request, 'tyndama/admin_panel.html', context)
+
 
 
 def get_music(request):
@@ -95,3 +109,15 @@ def add_music(request):
             print('error')
     context = {'form': form}
     return render(request, 'tyndama/add_music.html', context=context)
+
+
+@user_passes_test(is_admin)
+def delete_music(request, pk):
+    music = Music.objects.get(song_id=pk)
+
+    if request.method == 'POST':
+        music.delete()
+        return redirect('home')
+
+    context = {'music': music}
+    return render(request, 'tyndama/delete_music.html', context)
