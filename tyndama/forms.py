@@ -6,24 +6,17 @@ from .models import Music
 
 
 class CreateUserForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+	username = forms.CharField(label='Log_in', widget=forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Username'}))
+	email = forms.CharField(label='Email', widget=forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Email address'}))
+	password1 = forms.CharField(label='Password', widget=forms.PasswordInput(
+		attrs={'class': 'form-input', 'placeholder': 'password first'}))
+	password2 = forms.CharField(label='Password', widget=forms.PasswordInput(
+		attrs={'class': 'form-input', 'placeholder': 'password second'}))
 
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
+	class Meta:
+		model = User
+		fields = ['username', 'email', 'password1', 'password2']
 
-    def save(self, commit=True):
-        user = super(CreateUserForm, self).save(commit=False)
-
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-        return user
-
-        user.email = self.cleaned_data[email]
-        if commit:
-            user.save()
-        return user
 
 
 
@@ -33,7 +26,7 @@ class CreateUserForm(UserCreationForm):
 class AddMusicForm(ModelForm):
 	class Meta:
 		model = Music
-		fields = ('name', 'singer', 'tags', 'image', 'song', 'album')
+		fields = ('name', 'singer', 'tags', 'image', 'song', 'album', 'time')
 		labels = {
 			'name': '',
 			'singer': '',
@@ -41,6 +34,7 @@ class AddMusicForm(ModelForm):
 			'image': '',
 			'song': '',
 			'album': '',
+			'time': '',
 
 		}
 		widgets = {
@@ -50,5 +44,5 @@ class AddMusicForm(ModelForm):
 			'image': forms.FileInput(attrs={'class': 'form-control', 'placeholder': ''}),
 			'song': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Song'}),
 			'album': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Album'}),
-
+			'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Time'}),
 		}
