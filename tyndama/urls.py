@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout/', views.logoutPage, name='logout'),
     path('add_music/', views.add_music, name='add_music'),
     path('user_profile/', views.user_profile, name='user_profile'),
+    path('playlist/<int:playlist_id>/', views.playlist_detail, name='playlist'),
 
 ]

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .models import Music
+from .models import Music, Playlist
 from mutagen.mp3 import MP3
 from django.contrib.auth import authenticate, login, logout
 from tyndama.forms import CreateUserForm, AddMusicForm
@@ -10,8 +10,6 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib.auth.models import User
 
-
-from django.contrib.auth.models import User
 
 
 
@@ -58,9 +56,9 @@ def logoutPage(request):
 
 @login_required(login_url=login)
 def user_profile(request):
-
-    context = {}
-    return render(request, 'tyndama/user_profile.html', context)
+    playlist = Playlist.objects.filter(user=request.user)
+    context = {'playlist': playlist}
+    return render(request, 'tyndama/user_profile.html',context )
 
 
 def get_music(request):
@@ -95,3 +93,10 @@ def add_music(request):
             print('error')
     context = {'form': form}
     return render(request, 'tyndama/add_music.html', context=context)
+
+
+def playlist_detail(request, playlist_id):
+    playlist = Playlist.objects.get(id=playlist_id)
+    music_list = playlist.songs.all()
+    return render(request, 'tyndama/playlist.html', {'music_list': music_list})
+
