@@ -62,14 +62,14 @@ def logoutPage(request):
 
 
 def user_profile(request):
-<<<<<<< HEAD
+
     playlist = Playlist.objects.filter(user=request.user)
     context = {'playlist': playlist}
     return render(request, 'tyndama/user_profile.html',context )
-=======
+
     context = {}
     return render(request, 'tyndama/user_profile.html', context)
->>>>>>> 553f4e055c179f046e136a36db3ed0853e93aa27
+
 
 
 
@@ -118,13 +118,10 @@ def add_music(request):
     return render(request, 'tyndama/add_music.html', context=context)
 
 
-<<<<<<< HEAD
 def playlist_detail(request, playlist_id):
     playlist = Playlist.objects.get(id=playlist_id)
     music_list = playlist.songs.all()
     return render(request, 'tyndama/playlist.html', {'music_list': music_list})
-
-=======
 
 def delete_music(request, pk):
     music = Music.objects.get(song_id=pk)
@@ -136,4 +133,4 @@ def delete_music(request, pk):
     else:
        context = {'music': music}
        return render(request, 'tyndama/delete_music.html', context)
->>>>>>> 553f4e055c179f046e136a36db3ed0853e93aa27
+

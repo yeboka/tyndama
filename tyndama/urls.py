@@ -10,11 +10,6 @@ urlpatterns = [
     path('add_music/', views.add_music, name='add_music'),
     path('delete_music/<int:pk>', views.delete_music, name='delete_music'),
     path('user_profile/', views.user_profile, name='user_profile'),
-<<<<<<< HEAD
     path('playlist/<int:playlist_id>/', views.playlist_detail, name='playlist'),
-=======
     path('admin_panel/', views.admin_panel, name='admin_panel'),
-
->>>>>>> 553f4e055c179f046e136a36db3ed0853e93aa27
-
 ]
