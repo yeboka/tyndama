@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin panel</title>
+
+</head>
+<body>
+<h2>Admin panel</h2>
+<h3>Hello {{ request.user }}</h3>
+<hr/>
+<a href="{% url 'add_music' %}">Add Music</a>
+<hr/>
+<hr/><hr/><hr/>
+
+<a href="{% url 'logout' %}">Log out</a>
+
+            <table id="playlist" class="no-select">
+                <thead>
+                <th>#</th>
+                <th></th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Album</th>
+                <th>
+                    <img src="{% static 'tyndama/img/clock.svg' %}" alt="time">
+                </th>
+                <th>  </th>
+                </thead>
+                <tbody>
+                {% for i in music %}
+                    <tr>
+                        <td>{{ i.song_id }}</td>
+                        <td><img src="{% static 'tyndama/img/play.svg' %}" alt=""></td>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.singer }}</td>
+                        <td>{{ i.album }}</td>
+                        <td>{{ i.time }}</td>
+                        <td><a href="{% url 'delete_music' i.song_id %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+</body>
+</html>
