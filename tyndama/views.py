@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Music
@@ -14,15 +15,12 @@ from django.contrib.auth.models import User
 
 
 
-
+@login_required(login_url=login)
 def home(request):
     music = Music.objects.all()
 
     return render(request, 'tyndama/home.html', {'music': music})
-<<<<<<< HEAD
-=======
 
->>>>>>> 1a9c1c190fe6900478194124f5c4361ba8e8c3cc
 
 def registerPage(request):
     form = CreateUserForm()
