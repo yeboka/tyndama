@@ -11,12 +11,7 @@
 {% else %}
         <form action="" method="POST">
             {% csrf_token %}
-            {{ form.name }}
-            {{ form.singer }}
-            {{ form.tags }}
-            {{ form.image }}
-            {{ form.song }}
-            {{ form.album }}
+            {{ form.as_p }}
             <button type="submit" class="btn btn-success">Upload</button>
         </form>
 {% endif %}

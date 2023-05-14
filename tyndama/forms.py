@@ -40,7 +40,7 @@ class AddMusicForm(ModelForm):
 			'tags': '',
 			'image': '',
 			'song': '',
-			'album': ''
+			'album': '',
 
 		}
 		widgets = {
@@ -49,5 +49,6 @@ class AddMusicForm(ModelForm):
 			'tags': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tag'}),
 			'image': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
 			'song': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Song'}),
-			'album': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Album'})
+			'album': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Album'}),
+
 		}
