@@ -62,3 +62,7 @@ def get_time(name, url):
     length = int(audio.info.length)
     print(length)
 
+def add_music(request):
+    context = {}
+    return render(request, 'tyndama/add_music', context)
+
