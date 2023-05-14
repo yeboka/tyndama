@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete music</title>
+</head>
+<body>
+<h3> Are you sure you want delete {{ music.name }} ? </h3>
+
+<form method="POST" action="{% url 'delete_music' music.song_id %}">
+
+    {% csrf_token %}
+    <a href="{% url 'admin_panel' %}">Cancel</a>
+    <input type="submit" name="Confirm">
+</form>
+
+</body>
+</html>

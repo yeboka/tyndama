@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Music, Playlist
@@ -40,8 +40,14 @@ def loginPage(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            return redirect('user_profile')
+            if user.is_superuser:
+                # User is a superuser
+                login(request, user)
+                return redirect('admin_panel')
+            else:
+                # User is a regular user
+                login(request, user)
+                return redirect('user_profile')
         else:
             messages.info(request, 'Username or password is incorrect')
 
@@ -51,14 +57,31 @@ def loginPage(request):
 
 def logoutPage(request):
     logout(request)
-    return redirect('login')
+    return redirect('home')
 
 
-@login_required(login_url=login)
+
 def user_profile(request):
+<<<<<<< HEAD
     playlist = Playlist.objects.filter(user=request.user)
     context = {'playlist': playlist}
     return render(request, 'tyndama/user_profile.html',context )
+=======
+    context = {}
+    return render(request, 'tyndama/user_profile.html', context)
+>>>>>>> 553f4e055c179f046e136a36db3ed0853e93aa27
+
+
+
+def admin_panel(request):
+    music = Music.objects.all()
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            context = {'music': music}
+            return render(request, 'tyndama/admin_panel.html', context)
+    else:
+        return redirect('home')
+
 
 
 def get_music(request):
@@ -95,8 +118,22 @@ def add_music(request):
     return render(request, 'tyndama/add_music.html', context=context)
 
 
+<<<<<<< HEAD
 def playlist_detail(request, playlist_id):
     playlist = Playlist.objects.get(id=playlist_id)
     music_list = playlist.songs.all()
     return render(request, 'tyndama/playlist.html', {'music_list': music_list})
 
+=======
+
+def delete_music(request, pk):
+    music = Music.objects.get(song_id=pk)
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            if request.method == 'POST':
+                music.delete()
+                return redirect('home')
+    else:
+       context = {'music': music}
+       return render(request, 'tyndama/delete_music.html', context)
+>>>>>>> 553f4e055c179f046e136a36db3ed0853e93aa27
