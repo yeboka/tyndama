@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Music
@@ -49,6 +50,10 @@ def loginPage(request):
     context = {}
     return render(request, "tyndama/loginPage.html", context)
 
+def logoutPage(request):
+    logout(request)
+    return redirect('login')
+@login_required(login_url=login)
 def user_profile(request):
 
     context = {}
