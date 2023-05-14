@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from .models import Music
 from mutagen.mp3 import MP3
-# Create your views here.
+
+
 def home(request):
-    return render(request, 'tyndama/home.html')
+    music = Music.objects.all()
+
+    return render(request, 'tyndama/home.html', {'music' : music})
 
 
 def get_music(request):
