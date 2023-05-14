@@ -217,13 +217,42 @@ p,a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #0E0E0E;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #222222;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #0E0E0E;
+}
+
+.wrapper-table {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    max-height: 55vh;
+    justify-content: center;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 table {
     width: 90%;
-    border: 1px white solid;
-    max-height: 100%;
-    scroll-behavior: auto;
+    /*border: 1px white solid;*/
     margin-top: 10px;
     /*border-collapse: collapse;*/
     border-collapse: separate;
@@ -249,10 +278,15 @@ table td {
 
 }
 
-
+thead > tr {
+    /*position: fixed;*/
+}
 
 tbody {
     margin-top: 15px;
+    max-height: 60vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 tbody > tr {
@@ -262,6 +296,10 @@ tbody > tr {
 
 tbody > tr> td:nth-child(1) {
     border-radius: 5px 0 0 5px;
+}
+
+th:first-child, td:first-child {
+    width: 5%;
 }
 
 tbody > tr> td:last-child {
