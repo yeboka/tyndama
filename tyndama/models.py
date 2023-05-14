@@ -38,5 +38,12 @@ class Playlist(models.Model):
     songs = models.ManyToManyField(Music)
 
 
+    def get_num_of_tracks(self):
+        arr = []
+        for i in self.songs.iterator():
+            arr.append(i)
+        return len(arr)
+
+
     def __str__(self):
         return self.name
