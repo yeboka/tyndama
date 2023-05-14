@@ -1,8 +1,9 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Music
 from mutagen.mp3 import MP3
 from django.contrib.auth import authenticate, login, logout
-from tyndama.forms import CreateUserForm
+from tyndama.forms import CreateUserForm, AddMusicForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -20,6 +21,8 @@ def registerPage(request):
         if form.is_valid():
             form.save()
             return redirect('login')
+        else:
+            form = CreateUserForm
     context = {'form': form}
     return render(request, 'tyndama/registerPage.html', context)
 
@@ -63,6 +66,20 @@ def get_time(name, url):
     print(length)
 
 def add_music(request):
-    context = {}
-    return render(request, 'tyndama/add_music', context)
+    submitted = False
+    form = AddMusicForm()
+
+    if 'submitted' in request.GET:
+        submitted = True
+
+    if request.method == 'POST':
+        form = AddMusicForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/add_music?submitted=True')
+        else:
+            submitted = True
+    context = {'form': form, 'submitted': submitted}
+    return render(request, 'tyndama/add_music.html', context)
 
