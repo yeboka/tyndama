@@ -8,6 +8,37 @@ def home(request):
 
     return render(request, 'tyndama/home.html', {'music' : music})
 
+def registerPage(request):
+    form = CreateUserForm
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    context = {'form': form}
+    return render(request, 'tyndama/registerPage.html', context)
+
+
+def loginPage(request):
+    login_form = AuthenticationForm()
+    if request.method == "POST":
+        login_form = AuthenticationForm(request, data=request.POST)
+        if login_form.is_valid():
+            username = login_form.cleaned_data.get('username')
+            password = login_form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}.")
+                return redirect('home')
+            else:
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+    context = {"login_form": login_form}
+    return render(request=request, template_name="tyndama/loginPage.html", context=context)
+
 
 def get_music(request):
     music = Music.objects.all()
