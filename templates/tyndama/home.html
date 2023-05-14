@@ -14,6 +14,7 @@
           rel="stylesheet">
 </head>
 <body>
+<audio src="" id="audio"></audio>
 <div class="nav">
     <div class="info">
         <div class="profile-info">
@@ -92,13 +93,23 @@
                 {% for i in music %}
                     <tr>
                         <td>{{ i.song_id }}</td>
-                        <td><img src="{% static 'tyndama/img/play.svg' %}" alt=""></td>
+                        <td>
+                            <div onload="save('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}')" onclick="startPlay('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}' )"
+                                 class="inline-toggle-play pause" id="{{ i.song_id }}">
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </td>
                         <td>{{ i.name }}</td>
                         <td>{{ i.singer }}</td>
                         <td>{{ i.album }}</td>
                         <td>{{ i.time }}</td>
                     </tr>
                 {% endfor %}
+                {% for i in music %}
+                    <div class="forCheat" ></div>
+                {% endfor %}
+
                 </tbody>
             </table>
         </div>
@@ -106,37 +117,174 @@
     <div class="bottom-block">
         <div class="light"></div>
         <div class="player">
-            <div class="album-image" style="background-image: url('{% static 'tyndama/img/img_1.png' %}')"></div>
+            <div class="album-image"></div>
             <div class="control-panel">
-                <p class="player-title">
-                    See You Again (Clean)
+                <p class="player-title" id="player-title">
+
                 </p>
                 <p class="artist">
-                    Tyler, The Creator/Kali Uchis
+
                 </p>
                 <div class="control">
-                    <div class="btn btn-repeat">
-                        <i class="fas fa-redo"></i>
-                    </div>
+{#                    <div class="btn btn-repeat">#}
+{#                        <i class="fas fa-redo"></i>#}
+{#                    </div>#}
                     <div class="btn btn-prev">
                         <i class="fas fa-step-backward"></i>
                     </div>
-                    <div class="btn btn-toggle-play">
-                        <i class="fas fa-pause icon-pause"></i>
-                        <i class="fas fa-play icon-play"></i>
+                    <div class="btn btn-toggle-play pause">
+                        <span></span>
+                        <span></span>
                     </div>
                     <div class="btn btn-next">
                         <i class="fas fa-step-forward"></i>
                     </div>
-                    <div class="btn btn-random">
-                        <i class="fas fa-random"></i>
+{#                    <div class="btn btn-random">#}
+{#                        <i class="fas fa-random"></i>#}
+{#                    </div>#}
+                </div>
+                <div class="seek-bar">
+                    <div class="times">
+                        <div class="curr-time"></div>
+                        <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+                        <div class="duration"></div>
                     </div>
                 </div>
-                <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+
             </div>
 
         </div>
     </div>
 </div>
+<script>
+    let isPlaying = false;
+    let currentMusic = 1;
+    let currentSongPath = '';
+    let firstClick = true;
+    let currentTime = 0;
+    const data = [
+    ]
+
+    const music = document.getElementById("audio");
+
+    const seek_bar = document.querySelector('.progress');
+    const album_img = document.querySelector('.album-image');
+    const song_title = document.querySelector('.player-title');
+    const song_artist = document.querySelector('.artist');
+    const curr_time = document.querySelector('.curr-time');
+    const duration = document.querySelector('.duration');
+    const play_btn = document.querySelector('.btn-toggle-play');
+    const forward_btn = document.querySelector('.btn-next');
+    const previus_btn = document.querySelector('.btn-prev');
+
+    function save(path, id, name, singer, image) {
+        data.push({
+            path: path,
+            id: id,
+            name: name,
+            singer: singer,
+            image: image
+        });
+        console.log(data);
+    }
+
+    {#setMusic(0);#}
+
+    formatTime = (duration) => {
+        let min = Math.floor(duration / 60);
+        let sec = Math.floor(duration % 60);
+        return `${min}:${sec}`;
+
+    }
+
+    function setMusic(song, id, title, artist, img) {
+        seek_bar.value = 0;
+        song_title.innerHTML = title;
+        song_artist.innerHTML = artist;
+        album_img.style.backgroundImage = `url('media/${img}')`;
+
+        curr_time.innerHTML = '00:00'
+        setTimeout(() => {
+            seek_bar.max = music.duration;
+            duration.innerHTML = formatTime(music.duration);
+        }, 500);
+    }
+
+    function startPlay(song, id, title, artist, img) {
+        if (firstClick) {
+            firstClick = false;
+            currentMusic = id;
+            music.src = `/media/${song}`;
+        }
+
+        if (currentMusic !== id) {
+            if (isPlaying) {
+                isPlaying = !isPlaying;
+                document.getElementById(currentMusic).classList.toggle('pause');
+                play_btn.classList.toggle('pause');
+                currentTime = 0;
+            }
+        }
+        music.src = `/media/${song}`;
+
+        console.log(currentTime);
+        currentMusic = id;
+
+        currentSongPath = `/media/${song}`;
+
+        if (!isPlaying) {
+            currentTime = music.currentTime;
+            music.play();
+        } else {
+            music.currentTime = currentTime;
+
+            music.pause();
+        }
+        isPlaying = !isPlaying;
+        console.log(isPlaying);
+        const curr_song = document.getElementById(id);
+        curr_song.classList.toggle('pause');
+        play_btn.classList.toggle('pause');
+        setMusic(song, id, title, artist, img);
+    }
+
+    //seek bar
+    setInterval(() => {
+        currentTime = music.currentTime;
+        seek_bar.value = music.currentTime;
+        curr_time.innerHTML = formatTime(music.currentTime)
+    })
+
+    //changing time
+
+    seek_bar.onchange = function (e) {
+        const seekTime = (music.duration / 100) * e.target.value;
+        music.currentTime = seekTime;
+    };
+
+    play_btn.onclick = function (e) {
+        if (isPlaying) {
+            music.pause();
+        } else {
+            music.play();
+        }
+        isPlaying = !isPlaying;
+        console.log("Erbo mal")
+        play_btn.classList.toggle("pause");
+        document.getElementById(currentMusic).classList.toggle("pause");
+    };
+
+    forward_btn.onclick = function () {
+        currentMusic++;
+
+    }
+
+    previus_btn.onclick = function () {
+        currentMusic--;
+
+    }
+    {##}
+    {#setMusic(data[0].path, 1, data[0].name, data[0].artist, data[0].img);#}
+</script>
 </body>
 </html>
