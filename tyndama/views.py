@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Music
 from mutagen.mp3 import MP3
+from django.contrib.auth import authenticate, login, logout
+from tyndama.forms import CreateUserForm
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
 
 
 def home(request):
