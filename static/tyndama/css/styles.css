@@ -94,6 +94,7 @@ p, a:hover {
 .playlist {
     display: flex;
     align-items: center;
+    /*flex-direction: column;*/
     margin-top: 13px;
 }
 

@@ -34,27 +34,16 @@
     </div>
     <div class="playlists">
         <h4>Your Playlists</h4>
-        <div class="playlist">
-            <div class="img-wrapper" style="background-image: url('{% static 'tyndama/img/img.png' %}')"></div>
-            <div class="playlist-info">
-                <p class="title">All Songs</p>
-                <p class="num-of-tracks">121 tracks</p>
-            </div>
-        </div>
-        <div class="playlist">
-            <div class="img-wrapper" style="background-image: url('{% static 'tyndama/img/PKQqPbaUp6s.jpg' %}')"></div>
-            <div class="playlist-info">
-                <p class="title">Playlist</p>
-                <p class="num-of-tracks">121 tracks</p>
-            </div>
-        </div>
-        <div class="playlist">
-            <div class="img-wrapper" style="background-image: url('{% static 'tyndama/img/PKQqPbaUp6s.jpg' %}')"></div>
-            <div class="playlist-info">
-                <p class="title">Playlist</p>
-                <p class="num-of-tracks">121 tracks</p>
-            </div>
-        </div>
+        {% for i in playlist %}
+            <a class="playlist" href="{% url 'playlist' playlist_id=i.id %}">
+                <div class="img-wrapper"
+                     style="background-image: url('{% static 'tyndama/img/playlist_wallpaper.png' %}')"></div>
+                <div class="playlist-info">
+                    <p class="title">{{ i.name }}</p>
+                    <p class="num-of-tracks">{{ i.get_num_of_tracks }} tracks</p>
+                </div>
+            </a>
+        {% endfor %}
     </div>
 </div>
 <div class="content">
@@ -94,7 +83,8 @@
                     <tr>
                         <td>{{ i.song_id }}</td>
                         <td>
-                            <div onload="save('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}')" onclick="startPlay('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}' )"
+                            <div onload="save('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}')"
+                                 onclick="startPlay('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}' )"
                                  class="inline-toggle-play pause" id="{{ i.song_id }}">
                                 <span></span>
                                 <span></span>
@@ -107,7 +97,7 @@
                     </tr>
                 {% endfor %}
                 {% for i in music %}
-                    <div class="forCheat" ></div>
+                    <div class="forCheat"></div>
                 {% endfor %}
 
                 </tbody>
@@ -126,9 +116,9 @@
 
                 </p>
                 <div class="control">
-{#                    <div class="btn btn-repeat">#}
-{#                        <i class="fas fa-redo"></i>#}
-{#                    </div>#}
+                    {#                    <div class="btn btn-repeat">#}
+                    {#                        <i class="fas fa-redo"></i>#}
+                    {#                    </div>#}
                     <div class="btn btn-prev">
                         <i class="fas fa-step-backward"></i>
                     </div>
@@ -139,9 +129,9 @@
                     <div class="btn btn-next">
                         <i class="fas fa-step-forward"></i>
                     </div>
-{#                    <div class="btn btn-random">#}
-{#                        <i class="fas fa-random"></i>#}
-{#                    </div>#}
+                    {#                    <div class="btn btn-random">#}
+                    {#                        <i class="fas fa-random"></i>#}
+                    {#                    </div>#}
                 </div>
                 <div class="seek-bar">
                     <div class="times">
@@ -162,8 +152,7 @@
     let currentSongPath = '';
     let firstClick = true;
     let currentTime = 0;
-    const data = [
-    ]
+    const data = []
 
     const music = document.getElementById("audio");
 

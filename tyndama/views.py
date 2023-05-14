@@ -11,14 +11,16 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
 
+from django.contrib.auth.models import User
+
+
 
 @login_required(login_url=login)
-
-
 def home(request):
     music = Music.objects.all()
+    playlist = Playlist.objects.filter(user=request.user)
 
-    return render(request, 'tyndama/home.html', {'music': music})
+    return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist})
 
 
 def registerPage(request):
@@ -61,17 +63,10 @@ def logoutPage(request):
     return redirect('home')
 
 
-
 def user_profile(request):
-
     playlist = Playlist.objects.filter(user=request.user)
     context = {'playlist': playlist}
-    return render(request, 'tyndama/user_profile.html',context )
-
-    context = {}
     return render(request, 'tyndama/user_profile.html', context)
-
-
 
 
 def admin_panel(request):
@@ -120,9 +115,11 @@ def add_music(request):
 
 
 def playlist_detail(request, playlist_id):
+    all_playlist = Playlist.objects.filter(user=request.user)
+
     playlist = Playlist.objects.get(id=playlist_id)
     music_list = playlist.songs.all()
-    return render(request, 'tyndama/playlist.html', {'music_list': music_list})
+    return render(request, 'tyndama/playlist.html', {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist})
 
 def delete_music(request, pk):
     music = Music.objects.get(song_id=pk)
