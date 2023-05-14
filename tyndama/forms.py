@@ -18,6 +18,11 @@ class CreateUserForm(UserCreationForm):
 		fields = ['username', 'email', 'password1', 'password2']
 
 
+
+
+
+# create music form
+
 class AddMusicForm(ModelForm):
 	class Meta:
 		model = Music

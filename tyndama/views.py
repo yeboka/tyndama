@@ -10,6 +10,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
 
+from django.contrib.auth.models import User
+
+
 
 
 def home(request):
@@ -31,24 +34,25 @@ def registerPage(request):
 
 
 def loginPage(request):
-    login_form = AuthenticationForm()
-    if request.method == "POST":
-        login_form = AuthenticationForm(request, data=request.POST)
-        if login_form.is_valid():
-            username = login_form.cleaned_data.get('username')
-            password = login_form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.info(request, f"You are now logged in as {username}.")
-                return redirect('home')
-            else:
-                messages.error(request, "Invalid username or password.")
-        else:
-            messages.error(request, "Invalid username or password.")
-    context = {"login_form": login_form}
-    return render(request=request, template_name="tyndama/loginPage.html", context=context)
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('user_profile')
+        else:
+            messages.info(request, 'Username or password is incorrect')
+
+    context = {}
+    return render(request, "tyndama/loginPage.html", context)
+
+def user_profile(request):
+
+    context = {}
+    return render(request, 'tyndama/user_profile.html', context)
 
 def get_music(request):
     music = Music.objects.all()
