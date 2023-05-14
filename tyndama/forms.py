@@ -33,7 +33,7 @@ class CreateUserForm(UserCreationForm):
 class AddMusicForm(ModelForm):
 	class Meta:
 		model = Music
-		fields = ('name', 'singer', 'tags', 'image', 'song', 'album', 'time')
+		fields = ('name', 'singer', 'tags', 'image', 'song', 'album')
 		labels = {
 			'name': '',
 			'singer': '',
@@ -41,14 +41,14 @@ class AddMusicForm(ModelForm):
 			'image': '',
 			'song': '',
 			'album': '',
-			'time': ''
+
 		}
 		widgets = {
-			'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name:'}),
-			'singer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Singer:'}),
-			'tags': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tag:'}),
-			'image': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'To:'}),
-			'song': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Date:'}),
-			'album': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type (Compartment/Reserved seat):'}),
-			'time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Price:'}),
+			'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+			'singer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Singer'}),
+			'tags': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tag'}),
+			'image': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+			'song': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Song'}),
+			'album': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Album'}),
+
 		}
