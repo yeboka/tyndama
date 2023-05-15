@@ -1,6 +1,6 @@
 from django.db import models
 
-from .helper import  get_time
+from .helper import get_time
 from django.contrib.auth.models import User
 
 

@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from .models import Music, Playlist
 from mutagen.mp3 import MP3
@@ -17,10 +17,12 @@ from django.contrib.auth.models import User
 
 @login_required(login_url=login)
 def home(request):
+    user = request.user
+    print(user)
     music = Music.objects.all()
     playlist = Playlist.objects.filter(user=request.user)
 
-    return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist})
+    return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist, 'user': user})
 
 
 def registerPage(request):
@@ -132,3 +134,25 @@ def delete_music(request, pk):
        context = {'music': music}
        return render(request, 'tyndama/delete_music.html', context)
 
+
+def add_to_playlist(request):
+    if request.method == 'POST':
+        song_id = request.POST.get('song_id')
+        playlist_id = request.POST.get('playlist_id')
+        print(f'{song_id}   {playlist_id}')
+        try:
+            song = Music.objects.get(song_id=song_id)
+            print(song)
+            playlist = Playlist.objects.get(id=playlist_id)
+            print(f'Users : {playlist.user}')
+            print(playlist.songs.all())
+            playlist.songs.add(song)
+            print(playlist.songs.all())
+            playlist.save()
+            print('success')
+            return JsonResponse({'success': True})
+        except (Music.DoesNotExist, Playlist.DoesNotExist):
+            print('failed')
+            return JsonResponse({'success': False, 'error': 'Invalid song or playlist ID'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})

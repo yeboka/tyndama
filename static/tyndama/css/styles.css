@@ -83,6 +83,7 @@ p, a:hover {
     padding: 20px 0 30px 41px;
 }
 
+
 .playlists h4 {
     margin: 0;
     font-style: normal;
@@ -184,11 +185,28 @@ p, a:hover {
     margin-left: 16px;
 }
 
+.all-playlists {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    flex-direction: row;
+}
+
+.all-playlists-item {
+    margin-right: 30px;
+    padding-right: 20px ;
+    width: 30%;
+    display: flex;
+    align-items: center;
+}
+
 .curr-playlist {
     display: flex;
     align-items: center;
     width: 90%;
     margin-top: 50px;
+    /*padding-right: 30px;*/
 }
 
 .big {
@@ -242,6 +260,7 @@ p, a:hover {
 }
 
 .wrapper-table {
+    position: relative;
     margin-top: 1rem;
     width: 100%;
     display: flex;
@@ -519,6 +538,72 @@ table td:last-child, th:last-child {
     cursor: pointer;
 }
 
+
+
+/*POP UP*/
+
+.expand-button {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  width: 35px;
+  text-align: center;
+  color: #9F9F9F;
+  right: 15px;
+  bottom: 15px;
+  z-index: 10;
+  transition: transform 0.1s ease-in;
+
+}
+
+.expand > ul {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    background-color: #0E0E0E;
+    border-radius: 5px;
+}
+
+.expand > ul > li:hover {
+    background-color: #222222;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.expand-button.rotate {
+  transform: rotate(-45deg);
+}
+
+.expand {
+    position: absolute;
+  right: 15px;
+  bottom: 15px;
+  width: 0;
+  height: 0;
+  text-align: center;
+  transition: all 0.1s ease-in;
+}
+
+.expand * {
+  display: none;
+  color: #9F9F9F;
+}
+
+.expand.active {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  /*right: 0;*/
+  /*bottom: 0;*/
+  width: 30%;
+  /*height:;*/
+  padding: 5px;
+  border-radius: 0;
+}
+
+.expand.active * {
+  display: block;
+}
 
 
 

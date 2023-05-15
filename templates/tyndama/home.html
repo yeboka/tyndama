@@ -19,9 +19,13 @@
     <div class="info">
         <div class="profile-info">
             <div class="avatar" style="background-image: url('{% static 'tyndama/img/g9DlTPEgG_s.jpg' %}');"></div>
-            <h4 class="name">Yerbolat</h4>
+            <h4 class="name">{{ user.username }}</h4>
         </div>
         <div class="buttons">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'tyndama/img/home.svg' %}" alt="">
+                <span>Home</span>
+            </a>
             <a href="">
                 <img src="{% static 'tyndama/img/profile.svg' %}" alt="">
                 <span>Profile</span>
@@ -56,13 +60,18 @@
                 <button type="submit" class="search-button">Search</button>
             </form>
         </div>
-        <div class="curr-playlist">
-            <div class="img-wrapper big"
-                 style="background-image: url('{% static 'tyndama/img/PKQqPbaUp6s.jpg' %}')"></div>
-            <div class="playlist-info mr">
-                <p class="big-title">Playlist</p>
-                <p class="big-num-of-tracks">121 tracks</p>
-            </div>
+        <div class="all-playlists">
+            {% for item in playlist %}
+
+                <a href="{% url 'playlist' playlist_id=item.id %}" class="all-playlists-item mr">
+                    <div class="img-wrapper big"
+                         style="background-image: url('{% static 'tyndama/img/PKQqPbaUp6s.jpg' %}')"></div>
+                    <div class="playlist-info mr">
+                        <p class="big-title">{{ item.name }}</p>
+                        <p class="big-num-of-tracks">{{ item.get_num_of_tracks }} tracks</p>
+                    </div>
+                </a>
+            {% endfor %}
         </div>
     </div>
     <div class="mid-block">
@@ -74,6 +83,7 @@
                 <th>Title</th>
                 <th>Artist</th>
                 <th>Album</th>
+                <th></th>
                 <th>
                     <img src="{% static 'tyndama/img/clock.svg' %}" alt="time">
                 </th>
@@ -93,6 +103,16 @@
                         <td>{{ i.name }}</td>
                         <td>{{ i.singer }}</td>
                         <td>{{ i.album }}</td>
+                        <td>
+                            <div class="expand" id="expand{{ i.song_id }}">
+                                <ul>
+                                    {% for p in playlist %}
+                                        <li onclick="addToPlaylist('{{ i.song_id }}', '{{ p.id }}')">{{ p.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div id="expand-button" class="expand-button" onclick="pop_up('expand{{ i.song_id }}')">+</div>
+                        </td>
                         <td>{{ i.time }}</td>
                     </tr>
                 {% endfor %}
@@ -146,6 +166,7 @@
         </div>
     </div>
 </div>
+{% csrf_token %}
 <script>
     let isPlaying = false;
     let currentMusic = 1;
@@ -272,6 +293,44 @@
         currentMusic--;
 
     }
+
+    function pop_up(id) {
+        console.log('open')
+        console.log(id)
+        document.getElementById(id).classList.toggle('active');
+        this.classList.toggle('rotate');
+    }
+
+    function addToPlaylist(songId, playlistId) {
+        // Retrieve the CSRF token value
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        console.log(songId + " " + playlistId)
+        // Create the POST request
+        const request = new XMLHttpRequest();
+        request.open('POST', '/add_to_playlist/');
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        request.setRequestHeader('X-CSRFToken', csrftoken);
+
+        // Handle the response
+        request.onload = function() {
+            if (request.status === 200) {
+                const response = JSON.parse(request.responseText);
+                if (response.success) {
+                    console.log('Song added to playlist successfully');
+                } else {
+                    console.log('Failed to add song to playlist:', response.error);
+                }
+            } else {
+                console.log('Error:', request.statusText);
+            }
+        };
+
+        // Send the request with the song_id and playlist_id as parameters
+        const params = `song_id=${encodeURIComponent(songId)}&playlist_id=${encodeURIComponent(playlistId)}`;
+        request.send(params);
+        location.reload()
+    }
+
     {##}
     {#setMusic(data[0].path, 1, data[0].name, data[0].artist, data[0].img);#}
 </script>
