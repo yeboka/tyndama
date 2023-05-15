@@ -138,14 +138,12 @@ def playlist_detail(request, playlist_id):
 
 def delete_music(request, pk):
     music = Music.objects.get(song_id=pk)
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            if request.method == 'POST':
-                music.delete()
-                return redirect('home')
-    else:
-       context = {'music': music}
-       return render(request, 'tyndama/delete_music.html', context)
+    if request.method != "POST":
+        context = {'music': music}
+        return render(request, 'tyndama/delete_music.html', context)
+
+    music.delete()
+    return redirect('home')
 
 
 def add_to_playlist(request):
