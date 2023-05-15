@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from .models import Music, Playlist
 from mutagen.mp3 import MP3
 from django.contrib.auth import authenticate, login, logout
-from tyndama.forms import CreateUserForm, AddMusicForm
+from tyndama.forms import CreateUserForm, AddMusicForm, PlaylistForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -111,6 +111,24 @@ def add_music(request):
     return render(request, 'tyndama/add_music.html', context=context)
 
 
+
+def add_playlist(request):
+    music_items = Music.objects.all()
+    if request.method == 'POST':
+        form = PlaylistForm(request.POST)
+        if form.is_valid():
+            print('form is valid')
+            playlist = form.save(commit=False)
+            playlist.user = request.user
+            playlist.save()
+            form.save_m2m()
+            return redirect('playlist', playlist.id)
+    else:
+        print('sory you can not add')
+        form = PlaylistForm()
+    return render(request, 'tyndama/add_playlist.html', {'form': form, 'music_items': music_items})
+
+
 def playlist_detail(request, playlist_id):
     all_playlist = Playlist.objects.filter(user=request.user)
 
@@ -128,4 +146,5 @@ def delete_music(request, pk):
     else:
        context = {'music': music}
        return render(request, 'tyndama/delete_music.html', context)
+
 
