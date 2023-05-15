@@ -8,9 +8,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('get_music', views.get_music, name='get_music'),
     path('register/', views.registerPage, name='register'),
-    path('login/', views.loginPage, name='login'),
-    # path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', views.logoutPage, name='logout'),
+    path('login/', views.login_page, name='login'),
+    path('logout/', views.logout_page, name='logout'),
     path('add_music/', views.add_music, name='add_music'),
     path('add_playlist/', views.add_playlist, name='add_playlist'),
     path('delete_music/<int:pk>', views.delete_music, name='delete_music'),
@@ -18,5 +17,4 @@ urlpatterns = [
     path('playlist/<int:playlist_id>/', views.playlist_detail, name='playlist'),
     path('admin_panel/', views.admin_panel, name='admin_panel'),
     path('add_to_playlist/', views.add_to_playlist, name='add_to_playlist'),
-    # path('accounts/', include('django.contrib.auth.urls')),
 ]

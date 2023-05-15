@@ -216,6 +216,7 @@ p, a:hover {
 
 .mr {
     margin-right: 11px;
+    margin-top: 10px !important;
 }
 
 .big-title {
@@ -266,6 +267,17 @@ p, a:hover {
     display: flex;
     max-height: 55vh;
     justify-content: center;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.form-form {
+    width: 90%;
+    display: flex;
+    max-height: 55vh;
+    justify-content: center;
+    margin: 0 auto;
+    flex-direction: column;
     overflow-y: scroll;
     scroll-behavior: smooth;
 }
@@ -605,6 +617,17 @@ table td:last-child, th:last-child {
   display: block;
 }
 
+.for-btn {
+}
+
+.create-btn {
+    font-size: 20px;
+    /*font-weight: bold;*/
+    background-color: #36BA33;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
 
 
 
