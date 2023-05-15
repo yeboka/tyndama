@@ -14,6 +14,7 @@ class Music(models.Model):
     song = models.FileField(upload_to='images_1')
     album = models.CharField(max_length=255, default="-")
     time = models.CharField(max_length=50)
+    is_approved = models.BooleanField(default=False)
 
     def _str_(self):
         return self.name
@@ -25,7 +26,6 @@ class Music(models.Model):
             mode = int(sec - (audio_length * 60))
             print(mode)
             time = f"{audio_length}:{mode}"
-
 
             self.time = time
 

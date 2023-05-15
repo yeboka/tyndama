@@ -19,7 +19,7 @@
 <div class="nav">
     <div class="info">
         <div class="profile-info">
-            <div class="avatar" style="background-image: url('{% static 'tyndama/img/g9DlTPEgG_s.jpg' %}');"></div>
+            <div class="avatar" style="background-image: url('{% static 'tyndama/img/img_2.png' %}');"></div>
             <h4 class="name">{{ user.username }}</h4>
         </div>
         <div class="buttons">
@@ -27,8 +27,12 @@
                 <img src="{% static 'tyndama/img/home.svg' %}" alt="">
                 <span>Home</span>
             </a>
+            <a href="{% url 'music_requests' %}">
+                <img src="{% static 'tyndama/img/Frame.svg' %}" alt="">
+                <span>Music Requests</span>
+            </a>
             <a href="{% url 'add_music' %}">
-                <img src="{% static 'tyndama/img/profile.svg' %}" alt="">
+                <img src="{% static 'tyndama/img/plus.svg' %}" alt="">
                 <span>Add Music</span>
             </a>
             <a href="{% url 'logout' %}">
@@ -54,12 +58,12 @@
 <div class="content">
     <div class="top-block">
         <div class="search">
-            <form>
-                <input type="search" class="search-input" placeholder="Search song name, artist"
-                       aria-label="search vault">
-                <i class="fas fa-search search-icon" aria-hidden="true"></i>
-                <button type="submit" class="search-button">Search</button>
-            </form>
+{#            <form>#}
+{#                <input type="search" class="search-input" placeholder="Search song name, artist"#}
+{#                       aria-label="search vault">#}
+{#                <i class="fas fa-search search-icon" aria-hidden="true"></i>#}
+{#                <button type="submit" class="search-button">Search</button>#}
+{#            </form>#}
         </div>
         <div class="all-playlists">
             {% for item in playlist %}
@@ -92,6 +96,7 @@
                 </thead>
                 <tbody>
                 {% for i in music %}
+                    {% if i.is_approved %}
                     <tr>
                         <td>{{ i.song_id }}</td>
                         <td>
@@ -105,9 +110,11 @@
                         <td>{{ i.name }}</td>
                         <td>{{ i.singer }}</td>
                         <td>{{ i.album }}</td>
-                        <td><a href="{% url 'delete_music' i.song_id %}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                        <td><a href="{% url 'delete_music' i.song_id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </td>
                         <td>{{ i.time }}</td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 {% for i in music %}
                     <div class="forCheat"></div>
@@ -206,7 +213,7 @@
         seek_bar.value = 0;
         song_title.innerHTML = title;
         song_artist.innerHTML = artist;
-        album_img.style.backgroundImage = `url('media/${img}')`;
+        album_img.style.backgroundImage = `url('../media/${img}')`;
 
         curr_time.innerHTML = '00:00'
         setTimeout(() => {
@@ -307,7 +314,7 @@
         request.setRequestHeader('X-CSRFToken', csrftoken);
 
         // Handle the response
-        request.onload = function() {
+        request.onload = function () {
             if (request.status === 200) {
                 const response = JSON.parse(request.responseText);
                 if (response.success) {

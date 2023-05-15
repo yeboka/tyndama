@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Requests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+        }
+        h2 {
+            color: #444;
+            text-align: center;
+            margin-top: 50px;
+        }
+        p {
+            color: #333;
+            font-size: 16px;
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        li {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #fff;
+            background-color: #3cb371;
+            border-radius: 4px;
+            padding: 8px 12px;
+            text-decoration: none;
+            margin-left: 10px;
+            transition: background-color 0.2s;
+        }
+        a:hover {
+            background-color: #2e8b57;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Music Requests</h2>
+    {% if user.is_authenticated and not user.is_staff %}
+        {% if submitted %}
+            <p>Your music request has been submitted. Please wait for an admin to approve it.</p>
+        {% endif %}
+    {% endif %}
+    {% if user.is_staff %}
+        {% if pending_music %}
+            <ul>
+            {% for music in pending_music %}
+                <li>{{ music.name }} by {{ music.singer }} <a href="{% url 'approve_music' music.pk %}">Approve</a> <a href="{% url 'reject_music' music.pk %}">Reject</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>There are no pending music requests.</p>
+        {% endif %}
+    {% endif %}
+<div style="text-align:center">
+        <a href="{% url 'home' %}">Home</a>
+    </div>
+</body>
+</html>

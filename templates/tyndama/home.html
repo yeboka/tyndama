@@ -18,7 +18,7 @@
 <div class="nav">
     <div class="info">
         <div class="profile-info">
-            <div class="avatar" style="background-image: url('{% static 'tyndama/img/g9DlTPEgG_s.jpg' %}');"></div>
+            <div class="avatar" style="background-image: url('{% static 'tyndama/img/img_2.png' %}');"></div>
             <h4 class="name">{{ user.username }}</h4>
         </div>
         <div class="buttons">
@@ -26,9 +26,15 @@
                 <img src="{% static 'tyndama/img/home.svg' %}" alt="">
                 <span>Home</span>
             </a>
-            <a href="">
-                <img src="{% static 'tyndama/img/profile.svg' %}" alt="">
-                <span>Profile</span>
+            {% if request.user.is_superuser %}
+                <a href="{% url 'music_requests' %}">
+                    <img src="{% static 'tyndama/img/music.svg' %}" alt="">
+                    <span>Music Requests</span>
+                </a>
+            {% endif %}
+            <a href="{% url 'add_music' %}">
+                <img src="{% static 'tyndama/img/plus.svg' %}" alt="">
+                <span>Add Music</span>
             </a>
             <a href="{% url 'logout' %}">
                 <img src="{% static 'tyndama/img/logout.svg' %}" alt="">
@@ -56,7 +62,7 @@
 <div class="content">
     <div class="top-block">
         <div class="search">
-            <form method = "POST">
+            <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <i class="fas fa-search search-icon" aria-hidden="true"></i>
@@ -95,8 +101,9 @@
                 </thead>
                 <tbody>
                 {% for i in music %}
+                    {% if i.is_approved %}
                     <tr>
-                        <td>{{ i.song_id }}</td>
+                        <td>{{ forloop.counter }}</td>
                         <td>
                             <div onload="save('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}')"
                                  onclick="startPlay('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}' )"
@@ -116,10 +123,12 @@
                                     {% endfor %}
                                 </ul>
                             </div>
-                            <div id="expand-button" class="expand-button" onclick="pop_up('expand{{ i.song_id }}')">+</div>
+                            <div id="expand-button" class="expand-button" onclick="pop_up('expand{{ i.song_id }}')">+
+                            </div>
                         </td>
                         <td>{{ i.time }}</td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 {% for i in music %}
                     <div class="forCheat"></div>
@@ -306,7 +315,6 @@
         this.classList.toggle('rotate');
     }
 
-    function getPlaylist()
 
     function addToPlaylist(songId, playlistId) {
         // Retrieve the CSRF token value
@@ -319,7 +327,7 @@
         request.setRequestHeader('X-CSRFToken', csrftoken);
 
         // Handle the response
-        request.onload = function() {
+        request.onload = function () {
             if (request.status === 200) {
                 const response = JSON.parse(request.responseText);
                 if (response.success) {

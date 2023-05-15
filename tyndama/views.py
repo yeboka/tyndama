@@ -1,6 +1,7 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Music, Playlist
 from mutagen.mp3 import MP3
 from django.contrib.auth import authenticate, login, logout
@@ -28,7 +29,6 @@ def home(request):
 
         else:
             return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist, 'form': form})
-
 
     return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist, 'form': form})
 
@@ -107,23 +107,56 @@ def get_music(request):
 
 
 def add_music(request):
+    submitted = False
+
     form = AddMusicForm()
     if request.method == 'POST':
         form = AddMusicForm(request.POST, request.FILES)
 
         if form.is_valid():
-            print("Hi")
             instance = form.save(commit=False)
-            instance.save()
             messages.success(request, 'Form is valid!')
             if request.user.is_superuser:
+                instance.is_approved = True
+                instance.save()
                 return redirect('admin_panel')
             else:
-                return redirect('user_profile')
+                instance.save()
+                return HttpResponseRedirect('/home?submitted=True')
         else:
+            submitted = True
             print('error')
+    else:
+        form = AddMusicForm()
+
     context = {'form': form}
     return render(request, 'tyndama/add_music.html', context=context)
+
+
+@login_required
+@staff_member_required
+def music_requests(request):
+    pending_music = Music.objects.filter(is_approved=False)
+    print(f"Number of pending music requests: {pending_music.count()}")
+    context = {'pending_music': pending_music}
+    return render(request, 'tyndama/music_requests.html', context)
+
+
+@login_required
+@staff_member_required
+def approve_music(request, pk):
+    music = get_object_or_404(Music, pk=pk)
+    music.is_approved = True
+    music.save()
+    return redirect('music_requests')
+
+
+@login_required
+@staff_member_required
+def reject_music(request, pk):
+    music = get_object_or_404(Music, pk=pk)
+    music.delete()
+    return redirect('music_requests')
 
 
 def add_playlist(request):
@@ -165,7 +198,7 @@ def playlist_detail(request, playlist_id):
                           {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist, 'form': form})
 
     return render(request, 'tyndama/playlist.html',
-                      {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist, 'form': form})
+                  {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist, 'form': form})
 
 
 def delete_music(request, pk):

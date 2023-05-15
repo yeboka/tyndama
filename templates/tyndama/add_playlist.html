@@ -18,7 +18,7 @@
 <div class="nav">
     <div class="info">
         <div class="profile-info">
-            <div class="avatar" style="background-image: url('{% static 'tyndama/img/g9DlTPEgG_s.jpg' %}');"></div>
+            <div class="avatar" style="background-image: url('{% static 'tyndama/img/img_2.png' %}');"></div>
             <h4 class="name">{{ user.username }}</h4>
         </div>
         <div class="buttons">
@@ -26,9 +26,9 @@
                 <img src="{% static 'tyndama/img/home.svg' %}" alt="">
                 <span>Home</span>
             </a>
-            <a href="">
-                <img src="{% static 'tyndama/img/profile.svg' %}" alt="">
-                <span>Profile</span>
+             <a href="{% url 'add_music' %}">
+                <img src="{% static 'tyndama/img/plus.svg' %}" alt="">
+                <span>Add Music</span>
             </a>
             <a href="{% url 'logout' %}">
                 <img src="{% static 'tyndama/img/logout.svg' %}" alt="">
@@ -53,21 +53,21 @@
 <div class="content">
     <div class="top-block">
         <div class="search">
-            <form>
-                <input type="search" class="search-input" placeholder="Search song name, artist"
-                       aria-label="search vault">
-                <i class="fas fa-search search-icon" aria-hidden="true"></i>
-                <button type="submit" class="search-button">Search</button>
-            </form>
+{#            <form>#}
+{#                <input type="search" class="search-input" placeholder="Search song name, artist"#}
+{#                       aria-label="search vault">#}
+{#                <i class="fas fa-search search-icon" aria-hidden="true"></i>#}
+{#                <button type="submit" class="search-button">Search</button>#}
+{#            </form>#}
         </div>
     </div>
     <div class="mid-block">
-        <div class="form-form">
+        <div class="form-form" style="padding-top: 100px;">
             <h1>Create a new playlist</h1>
             <form method="post">
                 {% csrf_token %}
                 {{ form.name }}
-                <div>
+                <div >
                     <label>Select songs:</label>
                     <table id="playlist" class="no-select">
                         <thead>
@@ -84,7 +84,7 @@
                         <tbody>
                         {% for music_item in music_items %}
                             <tr>
-                                <td>{{ music_item.song_id }}</td>
+                                <td>{{ forloop.counter }}</td>
                                 <td>
                                     <div onload="save('{{ music_item.song }}', {{ music_item.song_id }}, '{{ music_item.name }}', '{{ music_item.singer }}', '{{ music_item.image }}')"
                                          onclick="startPlay('{{ music_item.song }}', {{ music_item.song_id }}, '{{ music_item.name }}', '{{ music_item.singer }}', '{{ music_item.image }}' )"
@@ -201,7 +201,7 @@
         seek_bar.value = 0;
         song_title.innerHTML = title;
         song_artist.innerHTML = artist;
-        album_img.style.backgroundImage = `url('media/${img}')`;
+        album_img.style.backgroundImage = `url('../media/${img}')`;
 
         curr_time.innerHTML = '00:00'
         setTimeout(() => {

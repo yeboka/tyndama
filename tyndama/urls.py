@@ -11,6 +11,11 @@ urlpatterns = [
     path('', views.login_page, name='login'),
     path('logout/', views.logout_page, name='logout'),
     path('add_music/', views.add_music, name='add_music'),
+    path('music-requests/', views.music_requests, name='music_requests'),
+    path('user_profile/', views.user_profile, name='user_profile'),
+    path('approve-music/<int:pk>/', views.approve_music, name='approve_music'),
+    path('reject-music/<int:pk>/', views.reject_music, name='reject_music'),
+
     path('add_playlist/', views.add_playlist, name='add_playlist'),
     path('delete_music/<int:pk>', views.delete_music, name='delete_music'),
     path('user_profile/', views.user_profile, name='user_profile'),

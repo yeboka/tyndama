@@ -18,17 +18,17 @@
 <div class="nav">
     <div class="info">
         <div class="profile-info">
-            <div class="avatar" style="background-image: url('{% static 'tyndama/img/g9DlTPEgG_s.jpg' %}');"></div>
-            <h4 class="name">Yerbolat</h4>
+            <div class="avatar" style="background-image: url('{% static 'tyndama/img/img_2.png' %}');"></div>
+            <h4 class="name">{{ user.username }}</h4>
         </div>
         <div class="buttons">
             <a href="{% url 'home' %}">
                 <img src="{% static 'tyndama/img/home.svg' %}" alt="">
                 <span>Home</span>
             </a>
-            <a href="">
-                <img src="{% static 'tyndama/img/profile.svg' %}" alt="">
-                <span>Profile</span>
+            <a href="{% url 'add_music' %}">
+                <img src="{% static 'tyndama/img/plus.svg' %}" alt="">
+                <span>Add Music</span>
             </a>
             <a href="{% url 'logout' %}">
                 <img src="{% static 'tyndama/img/logout.svg' %}" alt="">
@@ -88,7 +88,7 @@
                 <tbody>
                 {% for i in music %}
                     <tr>
-                        <td>{{ i.song_id }}</td>
+                        <td>{{ forloop.counter }}</td>
                         <td>
                             <div onload="save('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}')"
                                  onclick="startPlay('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}' )"
