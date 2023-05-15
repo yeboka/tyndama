@@ -48,14 +48,17 @@
                 </div>
             </a>
         {% endfor %}
+        <a href="{% url 'add_playlist' %}">
+            <h4 style="margin-top: 20px;">Create Playlist</h4>
+        </a>
     </div>
 </div>
 <div class="content">
     <div class="top-block">
         <div class="search">
-            <form>
-                <input type="search" class="search-input" placeholder="Search song name, artist"
-                       aria-label="search vault">
+            <form method = "POST">
+                {% csrf_token %}
+                {{ form.as_p }}
                 <i class="fas fa-search search-icon" aria-hidden="true"></i>
                 <button type="submit" class="search-button">Search</button>
             </form>
@@ -72,6 +75,7 @@
                     </div>
                 </a>
             {% endfor %}
+
         </div>
     </div>
     <div class="mid-block">
@@ -211,7 +215,7 @@
         seek_bar.value = 0;
         song_title.innerHTML = title;
         song_artist.innerHTML = artist;
-        album_img.style.backgroundImage = `url('media/${img}')`;
+        album_img.style.backgroundImage = `url('../media/${img}')`;
 
         curr_time.innerHTML = '00:00'
         setTimeout(() => {
