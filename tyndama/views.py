@@ -21,6 +21,8 @@ def home(request):
 
     return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist})
 
+def main(request):
+    return render()
 
 def registerPage(request):
     form = CreateUserForm()
@@ -34,7 +36,7 @@ def registerPage(request):
     return render(request, 'tyndama/registerPage.html', context)
 
 
-def loginPage(request):
+def login_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -49,7 +51,7 @@ def loginPage(request):
             else:
                 # User is a regular user
                 login(request, user)
-                return redirect('user_profile')
+                return redirect('home')
         else:
             messages.info(request, 'Username or password is incorrect')
 
@@ -57,9 +59,9 @@ def loginPage(request):
     return render(request, "tyndama/loginPage.html", context)
 
 
-def logoutPage(request):
+def logout_page(request):
     logout(request)
-    return redirect('home')
+    return redirect('login')
 
 
 def user_profile(request):
@@ -78,7 +80,6 @@ def admin_panel(request):
         return redirect('home')
 
 
-
 def get_music(request):
     music = Music.objects.all()
     for i in music:
@@ -90,10 +91,6 @@ def get_music(request):
         print(length)
 
     return render(request, 'tyndama/get_music.html', {'music': music})
-
-
-
-
 
 
 def add_music(request):
@@ -113,9 +110,9 @@ def add_music(request):
     return render(request, 'tyndama/add_music.html', context=context)
 
 
-
 def add_playlist(request):
     music_items = Music.objects.all()
+    playlist = Playlist.objects.filter(user=request.user)
     if request.method == 'POST':
         form = PlaylistForm(request.POST)
         if form.is_valid():
@@ -128,7 +125,7 @@ def add_playlist(request):
     else:
         print('sory you can not add')
         form = PlaylistForm()
-    return render(request, 'tyndama/add_playlist.html', {'form': form, 'music_items': music_items})
+    return render(request, 'tyndama/add_playlist.html', {'form': form, 'music_items': music_items, 'playlist': playlist})
 
 
 def playlist_detail(request, playlist_id):
@@ -137,6 +134,7 @@ def playlist_detail(request, playlist_id):
     playlist = Playlist.objects.get(id=playlist_id)
     music_list = playlist.songs.all()
     return render(request, 'tyndama/playlist.html', {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist})
+
 
 def delete_music(request, pk):
     music = Music.objects.get(song_id=pk)

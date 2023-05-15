@@ -46,9 +46,11 @@ class AddMusicForm(ModelForm):
 
 
 class PlaylistForm(forms.ModelForm):
+    songs = forms.ModelMultipleChoiceField(
+        queryset=Music.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'search-input'})
+    )
+
     class Meta:
         model = Playlist
         fields = ['name', 'songs']
-        widgets = {
-            'songs': forms.CheckboxSelectMultiple(),
-        }

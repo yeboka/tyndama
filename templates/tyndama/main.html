@@ -26,13 +26,9 @@
                 <img src="{% static 'tyndama/img/home.svg' %}" alt="">
                 <span>Home</span>
             </a>
-            <a href="">
-                <img src="{% static 'tyndama/img/profile.svg' %}" alt="">
-                <span>Profile</span>
-            </a>
-            <a href="{% url 'logout' %}">
+            <a href="{% url 'login' %}">
                 <img src="{% static 'tyndama/img/logout.svg' %}" alt="">
-                <span>Log Out</span>
+                <span>Log In</span>
             </a>
         </div>
     </div>
@@ -60,58 +56,68 @@
                 <button type="submit" class="search-button">Search</button>
             </form>
         </div>
+        <div class="all-playlists">
+            {% for item in playlist %}
+
+                <a href="{% url 'playlist' playlist_id=item.id %}" class="all-playlists-item mr">
+                    <div class="img-wrapper big"
+                         style="background-image: url('{% static 'tyndama/img/PKQqPbaUp6s.jpg' %}')"></div>
+                    <div class="playlist-info mr">
+                        <p class="big-title">{{ item.name }}</p>
+                        <p class="big-num-of-tracks">{{ item.get_num_of_tracks }} tracks</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
     </div>
     <div class="mid-block">
-        <div class="form-form">
-            <h1>Create a new playlist</h1>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.name }}
-                <div>
-                    <label>Select songs:</label>
-                    <table id="playlist" class="no-select">
-                        <thead>
-                        <th>#</th>
-                        <th></th>
-                        <th>Title</th>
-                        <th>Artist</th>
-                        <th>Album</th>
-                        <th></th>
-                        <th>
-                            <img src="{% static 'tyndama/img/clock.svg' %}" alt="time">
-                        </th>
-                        </thead>
-                        <tbody>
-                        {% for music_item in music_items %}
-                            <tr>
-                                <td>{{ music_item.song_id }}</td>
-                                <td>
-                                    <div onload="save('{{ music_item.song }}', {{ music_item.song_id }}, '{{ music_item.name }}', '{{ music_item.singer }}', '{{ music_item.image }}')"
-                                         onclick="startPlay('{{ music_item.song }}', {{ music_item.song_id }}, '{{ music_item.name }}', '{{ music_item.singer }}', '{{ music_item.image }}' )"
-                                         class="inline-toggle-play pause" id="{{ music_item.song_id }}">
-                                        <span></span>
-                                        <span></span>
-                                    </div>
-                                </td>
-                                <td>{{ music_item.name }}</td>
-                                <td>{{ music_item.singer }}</td>
-                                <td>{{ music_item.album }}</td>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="songs"
-                                               id="song_{{ music_item.song_id }}" value="{{ music_item.song_id }}">
-                                    </div>
-                                </td>
-                                <td>{{ music_item.time }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="for-btn">
-                    <button type="submit" class="create-btn">Create Playlist</button>
-                </div>
-            </form>
+        <div class="wrapper-table">
+            <table id="playlist" class="no-select">
+                <thead>
+                <th>#</th>
+                <th></th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Album</th>
+                <th></th>
+                <th>
+                    <img src="{% static 'tyndama/img/clock.svg' %}" alt="time">
+                </th>
+                </thead>
+                <tbody>
+                {% for i in music %}
+                    <tr>
+                        <td>{{ i.song_id }}</td>
+                        <td>
+                            <div onload="save('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}')"
+                                 onclick="startPlay('{{ i.song }}', {{ i.song_id }}, '{{ i.name }}', '{{ i.singer }}', '{{ i.image }}' )"
+                                 class="inline-toggle-play pause" id="{{ i.song_id }}">
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </td>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.singer }}</td>
+                        <td>{{ i.album }}</td>
+                        <td>
+                            <div class="expand" id="expand{{ i.song_id }}">
+                                <ul>
+                                    {% for p in playlist %}
+                                        <li onclick="addToPlaylist('{{ i.song_id }}', '{{ p.id }}')">{{ p.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div id="expand-button" class="expand-button" onclick="pop_up('expand{{ i.song_id }}')">+</div>
+                        </td>
+                        <td>{{ i.time }}</td>
+                    </tr>
+                {% endfor %}
+                {% for i in music %}
+                    <div class="forCheat"></div>
+                {% endfor %}
+
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="bottom-block">
@@ -302,7 +308,7 @@
         request.setRequestHeader('X-CSRFToken', csrftoken);
 
         // Handle the response
-        request.onload = function () {
+        request.onload = function() {
             if (request.status === 200) {
                 const response = JSON.parse(request.responseText);
                 if (response.success) {
