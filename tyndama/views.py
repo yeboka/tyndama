@@ -4,25 +4,38 @@ from django.shortcuts import render, redirect
 from .models import Music, Playlist
 from mutagen.mp3 import MP3
 from django.contrib.auth import authenticate, login, logout
-from tyndama.forms import CreateUserForm, AddMusicForm, PlaylistForm
+from tyndama.forms import CreateUserForm, AddMusicForm, PlaylistForm, Search
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib.auth.models import User
 
 
-
 @login_required(login_url=login)
 def home(request):
+    playlist = Playlist.objects.filter(user=request.user)
+    form = Search()
+    music = Music.objects.all()
     user = request.user
     print(user)
-    music = Music.objects.all()
-    playlist = Playlist.objects.filter(user=request.user)
+    if request.method == "POST":
+        form = Search(request.POST)
 
-    return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist})
+        if form.is_valid():
+            text = request.POST.getlist('text_input')[0]
+            music = Music.objects.filter(name__startswith=text)
+            return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist, 'form': form})
+
+        else:
+            return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist, 'form': form})
+
+
+    return render(request, 'tyndama/home.html', {'music': music, 'playlist': playlist, 'form': form})
+
 
 def main(request):
     return render()
+
 
 def registerPage(request):
     form = CreateUserForm()
@@ -103,7 +116,7 @@ def add_music(request):
             instance = form.save(commit=False)
             instance.save()
             messages.success(request, 'Form is valid!')
-            return HttpResponseRedirect('/')
+            return redirect('home')
         else:
             print('error')
     context = {'form': form}
@@ -125,15 +138,31 @@ def add_playlist(request):
     else:
         print('sory you can not add')
         form = PlaylistForm()
-    return render(request, 'tyndama/add_playlist.html', {'form': form, 'music_items': music_items, 'playlist': playlist})
+    return render(request, 'tyndama/add_playlist.html',
+                  {'form': form, 'music_items': music_items, 'playlist': playlist})
 
 
 def playlist_detail(request, playlist_id):
+    form = Search()
     all_playlist = Playlist.objects.filter(user=request.user)
-
     playlist = Playlist.objects.get(id=playlist_id)
     music_list = playlist.songs.all()
-    return render(request, 'tyndama/playlist.html', {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist})
+    if request.method == "POST":
+        form = Search(request.POST)
+
+        if form.is_valid():
+            text = request.POST.getlist('text_input')[0]
+            music_list = music_list.filter(name__startswith=text)
+
+            return render(request, 'tyndama/playlist.html',
+                          {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist, 'form': form})
+
+        else:
+            return render(request, 'tyndama/playlist.html',
+                          {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist, 'form': form})
+
+    return render(request, 'tyndama/playlist.html',
+                      {'music': music_list, 'playlist': all_playlist, 'curr_playlist': playlist, 'form': form})
 
 
 def delete_music(request, pk):

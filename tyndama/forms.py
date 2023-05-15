@@ -54,3 +54,7 @@ class PlaylistForm(forms.ModelForm):
     class Meta:
         model = Playlist
         fields = ['name', 'songs']
+
+
+class Search(forms.Form):
+    text_input = forms.CharField(label="",  widget=forms.TextInput(attrs={'placeholder': 'Search global', 'class' : 'search-input'}), required=False)
