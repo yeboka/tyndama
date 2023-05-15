@@ -1,19 +1,38 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Delete music</title>
+    <link rel="stylesheet" href="{% static 'tyndama/css/login.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+          integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+          crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chivo:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200&family=M+PLUS+1:wght@100;200;300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
 </head>
 <body>
-<h3> Are you sure you want delete {{ music.name }} ? </h3>
 
-<form method="POST" action="{% url 'delete_music' music.song_id %}">
+<div class="container">
+    <div class="login-page">
+        <div class="form">
+            <form method="POST" action="{% url 'delete_music' music.song_id %}">
+                {% csrf_token %}
+                <h3 class="login-title">Are you sure you want delete {{ music.name }} ?</h3>
+                <div class="input-group mb-3">
+                    <a href="{% url 'admin_panel' %}">Cancel</a>
+                </div>
+                <div class="input-group mb-2">
 
-    {% csrf_token %}
-    <a href="{% url 'admin_panel' %}">Cancel</a>
-    <input type="submit" name="Confirm">
-</form>
+                    <button type="submit" class="form-control">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
