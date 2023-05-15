@@ -116,7 +116,10 @@ def add_music(request):
             instance = form.save(commit=False)
             instance.save()
             messages.success(request, 'Form is valid!')
-            return redirect('home')
+            if request.user.is_superuser:
+                return redirect('admin_panel')
+            else:
+                return redirect('user_profile')
         else:
             print('error')
     context = {'form': form}
@@ -172,7 +175,7 @@ def delete_music(request, pk):
         return render(request, 'tyndama/delete_music.html', context)
 
     music.delete()
-    return redirect('home')
+    return redirect('admin_panel')
 
 
 def add_to_playlist(request):
