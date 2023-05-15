@@ -1,9 +1,6 @@
 from django.urls import path
+
 from . import views
-from django.urls import include, path
-from django.contrib.auth import views as auth_views
-
-
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,6 +14,5 @@ urlpatterns = [
     path('user_profile/', views.user_profile, name='user_profile'),
     path('playlist/<int:playlist_id>/', views.playlist_detail, name='playlist'),
     path('admin_panel/', views.admin_panel, name='admin_panel'),
-    path('add_to_playlist/', views.add_to_playlist, name='add_to_playlist'),
-
+    path('add_to_playlist/', views.add_to_playlist, name='add_to_playlist')
 ]
